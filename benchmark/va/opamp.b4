@@ -1,0 +1,31 @@
+** operational amplifier (ac): benchmarking implementation of bsim4.8.0
+
+xm1 bias1 1 cm cm n1 l=0.09u w=10u verbose=1
+xm2 bias2 in2 cm cm n1 l=0.09u w=10u
+xm3 vdd bias1 bias1 vdd p1 l=0.09u w=2u verbose=1
+xm4 bias2 bias1 vdd vdd p1 l=0.09u w=2u
+
+xm5 cm bias vss vss n1 l=0.09u w=2u
+xmbias bias bias vss vss n1 l=0.09u w=2u
+rbias 0 bias 195k
+
+xm6 8 bias vss vss n1 l=0.09u w=2u
+xm7 8 bias2 vdd out n1 l=0.09u w=2u
+
+cfb bias2 8 2p
+
+vid 1 c 0 ac 0.1
+eid in2 c 1 c -1
+vic c 0 dc 0
+vss vss 0 -1.8
+vdd vdd 0 1.8 
+
+.ac dec 10 100 100meg 
+.print ac vdb(8)
+
+.include modelcard_va.nmos
+.include modelcard_va.pmos
+
+.inc modflags.inc
+.option post=2 nomod numdgt=7 ingold=2
+.end

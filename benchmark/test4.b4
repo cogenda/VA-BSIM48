@@ -1,0 +1,15 @@
+** nmosfet: benchmarking implementation of bsim4.8.0
+
+** circuit description **
+m1 2 1 0 0 n1 l=0.09u w=10.0u rgeomod=1
+vgs 1 0 1.2 
+vds 2 0 1.2
+
+.dc vgs 0.0 1.2 0.02 vds 0.05 1.2 0.5 
+
+.print dc v(2) i(vds)
+
+.include modelcard.nmos
+.inc modflags.inc
+.option post=2 nomod numdgt=7 ingold=2
+.end

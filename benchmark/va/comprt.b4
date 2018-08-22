@@ -1,0 +1,44 @@
+** one-bit comparator (tran): benchmarking implementation of bsim4.8.0 
+.param vvd=1.8
+
+xm1 anot a vdd vdd  p1 w=3.6u l=0.2u rgeomod=1
+xm2 anot a 0 0 n1 w=1.8u l=0.2u rgeomod=1
+xm3 bnot b vdd vdd  p1 w=3.6u l=0.2u rgeomod=1
+xm4 bnot b 0 0 n1 w=1.8u l=0.2u rgeomod=1
+xm5 aorbnot 0 vdd vdd p1 w=1.8u l=3.6u rgeomod=1
+xm6 aorbnot b 1 0 n1 w=1.8u l=0.2u rgeomod=1
+xm7 1 anot 0 0 n1 w=1.8u l=0.2u rgeomod=1
+xm8 lnot 0 vdd vdd p1 w=1.8u l=3.6u rgeomod=1
+xm9 lnot bnot 2 0 n1 w=1.8u l=0.2u rgeomod=1
+xm10 2 a 0 0 n1 w=1.8u l=0.2u rgeomod=1
+xm11 qnot 0 vdd vdd p1 w=3.6u l=3.6u rgeomod=1
+xm12 qnot aorbnot 3 0 n1 w=1.8u l=0.2u rgeomod=1
+xm13 3 lnot 0 0 n1 w=1.8u l=0.2u rgeomod=1
+xmqlo 8 qnot vdd vdd  p1 w=3.6u l=0.2u rgeomod=1
+xmql1 8 qnot 0 0 n1 w=1.8u l=0.2u rgeomod=1
+xmlto 9 lnot vdd vdd p1 w=3.6u l=0.2u rgeomod=1
+xmlt1 9 lnot 0 0 n1 w=1.8u l=0.2u rgeomod=1
+cq qnot 0 30f
+cl lnot 0 10f
+
+vdd vdd 0 1.8
+va a 0  pulse 0 1.8 10ns .1ns .1ns 15ns 30ns
+vb b 0 0
+
+.include modelcard_va.nmos
+.include modelcard_va.pmos
+
+.tran 1ns 60ns
+.option delmax=5p accurate=1 
+.print tran v(9) v(8) 
+.meas tran period1 trig v(2) val='0.5*vvd' fall=1  targ v(2) val='0.5*vvd' fall=2
+.meas tran period2 trig v(3) val='0.5*vvd' rise=1  targ v(3) val='0.5*vvd' fall=1
+.meas tran period3 trig v(qnot) val='0.5*vvd' rise=1  targ v(qnot) val='0.5*vvd' fall=1
+.meas tran period4 trig v(anot) val='0.5*vvd' fall=1  targ v(anot) val='0.5*vvd' rise=1
+.meas tran period5 trig v(lnot) val='0.5*vvd' fall=1  targ v(lnot) val='0.5*vvd' fall=2
+.meas tran falltime1 trig v(2)    val='0.7*vvd' fall=2  targ v(2)    val='0.1*vvd' fall=2
+.meas tran falltime4 trig v(anot) val='0.9*vvd' fall=2  targ v(anot) val='0.1*vvd' fall=2
+.meas tran falltime5 trig v(lnot) val='0.7*vvd' fall=2  targ v(lnot) val='0.1*vvd' fall=2
+.inc modflags.inc
+.option post=2 nomod numdgt=7 ingold=2
+.end

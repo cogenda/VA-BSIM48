@@ -1,0 +1,65 @@
+*****************==== 17-stage cmos ro ====*******************
+***********benchmarking implementation of bsim4.8.0
+.include modelcard.nmos
+.include modelcard.pmos
+.param vvd=2
+
+vdd 1 0 2.0
+mp1 3 2 1 1 p1 l=0.18u w=10u ad=5p pd=6u as=5p ps=6u
++ geomod=2 min=0 rgeomod=3 sa=2u sb=8u nf=3 sd=0.2u 
+mn1 3 2 0 0 n1 l=0.18u w=5u
++ geomod=2 min=0 rgeomod=8 sa=2u sb=8u nf=3 sd=0.2u 
+mp2 4 3 1 1 p1 l=0.18u w=10u ad=5p pd=6u as=5p ps=6u sa=2u sb=8u nf=3 sd=0.2u 
+mn2 4 3 0 0 n1 l=0.18u w=5u ad=5p pd=6u as=5p ps=6u sa=2u sb=8u nf=3 sd=0.2u 
+mp3 5 4 1 1 p1 l=0.18u w=10u ad=5p pd=6u as=5p ps=6u sa=2u sb=8u nf=3 sd=0.2u 
+mn3 5 4 0 0 n1 l=0.18u w=5u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mp4 6 5 1 1 p1 l=0.18u w=10u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mn4 6 5 0 0 n1 l=0.18u w=5u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mp5 7 6 1 1 p1 l=0.18u w=10u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mn5 7 6 0 0 n1 l=0.18u w=5u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mp6 8 7 1 1 p1 l=0.18u w=10u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mn6 8 7 0 0 n1 l=0.18u w=5u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mp7 9 8 1 1 p1 l=0.18u w=10u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mn7 9 8 0 0 n1 l=0.18u w=5u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mp8 10 9 1 1 p1 l=0.18u w=10u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mn8 10 9 0 0 n1 l=0.18u w=5u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mp9 11 10 1 1 p1 l=0.18u w=10u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mn9 11 10 0 0 n1 l=0.18u w=5u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mp10 12 11 1 1 p1 l=0.18u w=10u ad=5p pd=6u as=5p ps=6u sa=2u sb=8u nf=3 sd=0.2u  
+mn10 12 11 0 0 n1 l=0.18u w=5u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+
+mp11 13 12 1 1 p1 l=0.18u w=10u ad=5p pd=6u as=5p ps=6u sa=2u sb=8u nf=3 sd=0.2u  
+mn11 13 12 0 0 n1 l=0.18u w=5u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mp12 14 13 1 1 p1 l=0.18u w=10u ad=5p pd=6u as=5p ps=6u sa=2u sb=8u nf=3 sd=0.2u  
+mn12 14 13 0 0 n1 l=0.18u w=5u ad=5p sa=2u sb=8u nf=3 sd=0.2u 
+mp13 15 14 1 1 p1 l=0.18u w=10u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mn13 15 14 0 0 n1 l=0.18u w=5u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mp14 16 15 1 1 p1 l=0.18u w=10u ad=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mn14 16 15 0 0 n1 l=0.18u w=5u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mp15 17 16 1 1 p1 l=0.18u w=10u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mn15 17 16 0 0 n1 l=0.18u w=5u ad=5p as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mp16 18 17 1 1 p1 l=0.18u w=10u ad=5p pd=6u as=5p ps=6u  sa=2u sb=8u nf=3 sd=0.2u 
+mn16 18 17 0 0 n1 l=0.18u w=5u pd=6u as=5p ps=6u sa=2u sb=8u nf=3 sd=0.2u 
+mp17 2  18 1 1 p1 l=0.18u w=10u ad=5p pd=6u as=5p ps=6u sa=2u sb=8u nf=3 sd=0.2u 
+mn17 2  18 0 0 n1 l=0.18u w=5u ad=5p pd=6u as=5p ps=6u sa=2u sb=8u nf=3 sd=0.2u 
+c1 18 0 .1p
+
+*.ic v(2)=2.0 v(3)=0 v(4)=2.0
+.ic v(2)=2.0 v(3)=0.0 v(4)=2.0 v(5)=0.0 v(6)=2.0 
+.ic v(7)=0.0 v(8)=2.0 v(9)=0.0 v(10)=2.0 v(11)=0.0 v(12)=2.0
+.ic v(13)=0.0 v(14)=2.0 v(15)=0.0 v(16)=2.0 v(17)=0.0 v(18)=2.0
+*.ic v(10)=5 v(2)=5 v(3)=5 v(4)=5 v(5)=5 v(6)=5
+.tran .1ns 10ns
+.option delmax=5p accurate=1
+.print tran v(2) 
+*.meas tran period1 trig v(1) val='0.5*vvd' rise=2  targ v(1) val='0.5*vvd' rise=3
+.meas tran period2 trig v(6) val='0.7*vvd' rise=2  targ v(6) val='0.7*vvd' rise=3
+.meas tran period3 trig v(15) val='0.5*vvd' rise=1  targ v(15) val='0.5*vvd' rise=2
+*.meas tran result1  param='period2/period1'
+*.meas tran result2  param='period3/period1'
+.meas tran resultr  param='period2/period3'
+.meas tran risetime trig v(15) val='0.1*vvd' rise=2 targ v(15) val='0.9*vvd' rise=2
+.meas tran falltime trig v(15) val='0.9*vvd' fall=2 targ v(15) val='0.1*vvd' fall=2  
+.inc modflags.inc
+.option post=2 nomod numdgt=7 ingold=2
+.end

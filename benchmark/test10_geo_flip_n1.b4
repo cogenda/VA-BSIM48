@@ -1,0 +1,26 @@
+** nmosfet: benchmarking implementation of bsim4.8.0
+.option post=2  nomod numdgt=7 ingold=2
+
+** circuit description **
+.param type=1
+m1 2 1 s b n1 l=0.09u w=10.0u rgeomod=0 $verbose=1 _ckt_gmin=1e-18
+*xm2 2 1 0 b p1 l=0.09u w=10.0u rgeomod=1 verbose=0
+*+ad=0p pd=0u as=0p ps=0u
++ad=15p pd=26u as=5p ps=6u
+vg 1 0 '0.5*type'
+vs s 0 '1.2*type' 
+vb b 0 0
+vd 2 0 0
+
+*.dc vds 0.1 1.2 0.1 
+.dc vs '-1.2*type' '1.2*type' '0.1 *type' vg 0 '1.2*type' '0.3*type'
+
+.temp 125.0 
+
+.print dc i(vd) i(vb) i(vg) i(vs) 
+
+.include modelcard.pmos
+.include modelcard.nmos
+.inc modflags.inc
+.option post=2 nomod numdgt=7 ingold=2
+.end

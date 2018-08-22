@@ -1,0 +1,16 @@
+** pmosfet: benchmarking implementation of bsim4.8.0
+
+** circuit description **
+xm1 2 1 0 3 p1 l=0.09u w=10.0u rgeomod=1
+vgs 1 0 -1.2
+vds 2 0 -0.1
+vbs 3 0 0.0
+
+.dc vgs 0.6 -1.2 -0.02 vds -0.1 -1.2 -0.3
+
+.print dc v(2) i(vds)
+
+.include modelcard_va.pmos 
+.inc modflags.inc
+.option post=2 nomod numdgt=7 ingold=2
+.end

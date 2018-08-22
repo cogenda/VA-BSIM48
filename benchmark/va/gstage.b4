@@ -1,0 +1,17 @@
+** mosfet gain stage (ac): benchmarking implementation of bsim4.8.0 
+
+xm1 3 2 0 0 n1 l=0.09u w=4u
+rsource 1 2 10.0k
+rload 3 vdd 2.5k
+
+vdd vdd 0 1.8 
+vin 1 0 1.2 ac 0.1
+
+.ac dec 10 100 1000meg 
+.print ac vdb(3)
+
+.include modelcard_va.nmos
+
+.inc modflags.inc
+.option post=2 nomod numdgt=7 ingold=2
+.end
