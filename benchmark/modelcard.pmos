@@ -6,24 +6,6 @@
 ** team's standard results using spice3f5.
 **** navid paydavosi, tanvir morshed, darsen lu, mohan dunga, wenwei yang, ali niknejad, and chenming hu 09/19/2013.
 
-*.if (rdsmod>0 && rbodymod>0 && rgatemod>0)
-*  .hdl ../../../../bsim4_fulltopo.va
-*.elseif (rdsmod>0 && rbodymod>0)
-*  .hdl ../../../../bsim4_rdsrbody.va
-*.elseif (rdsmod>0 && rgatemod>0)
-*  .hdl ../../../../bsim4_rdsrgate.va
-*.elseif (rgatemod>0 && rbodymod>0)
-*  .hdl ../../../../bsim4_rgaterbody.va
-*.elseif (rdsmod>0)
-*  .hdl ../../../../bsim4_rds.va
-*.elseif (rbodymod>0)
-*  .hdl ../../../../bsim4_rbody.va
-*.elseif (rgatemod>0)
-*  .hdl ../../../../bsim4_rgate.va
-*.else
-*  .hdl ../../../../bsim4_body.va
-*.endif
-*.hdl ../../../../bsim4_release.va
 ** model: bsim4.8.0
 ** berkeley spice3f5 compatible
 ** lmin=0.02 lmax=10 wmin=0.6 wmax=20
