@@ -480,7 +480,7 @@ module bsim4_va(d, g, s, b);
     parameter real l = `NOT_GIVEN;               // Length
     parameter real w = `NOT_GIVEN;               // Width
     parameter integer nf = `INT_NOT_GIVEN;       // Number of fingers
-    parameter integer min = `INT_NOT_GIVEN;     // Minimize either D or S
+    parameter integer _min = `INT_NOT_GIVEN;     // Minimize either D or S
     parameter real ad = `NOT_GIVEN;              // Drain area
     parameter real as = `NOT_GIVEN;              // Source area
     parameter real pd = `NOT_GIVEN;              // Drain perimeter
@@ -2266,7 +2266,7 @@ module bsim4_va(d, g, s, b);
             BSIM4rnoib = rnoib;      
             BSIM4rnoic = rnoic;      
             
-            BSIM4min = min;
+            BSIM4min = _min;
             BSIM4drainArea = ad;
             BSIM4sourceArea = as;
             BSIM4drainSquares = nrd;
@@ -7941,8 +7941,8 @@ module bsim4_va(d, g, s, b);
                 BSIM4sourceConductance = 1.0 / BSIM4sourceConductance;
             else begin
 	      //if (BSIM4sourceConductance == 0.0 ) begin /*TODO: always keeps internal nodes,we used all full static nodes at setup.*/
-	      if (BSIM4sourceConductance == 0.0 && (BSIM4rsh > 0 \
-                 && (!BSIM4sourceSquaresGiven && BSIM4rgeoMod != 0) \
+	      if (BSIM4sourceConductance == 0.0 && (BSIM4rsh > 0 
+                 && (!BSIM4sourceSquaresGiven && BSIM4rgeoMod != 0) 
                    || BSIM4rdsMod != 0) ) begin
                   BSIM4sourceConductance = 1.0e3; /* mho */
 	          $strobe ("Warning: (instance %M) Source diffusion conductance reset to 1.0e3 mho.\n");
@@ -7965,8 +7965,8 @@ module bsim4_va(d, g, s, b);
                 BSIM4drainConductance = 1.0 / BSIM4drainConductance;
             else begin    
 	      //if (BSIM4drainConductance == 0.0 ) begin /*TODO: need to remove internal nodes? but we used all full static nodes at setup.*/
-	      if (BSIM4drainConductance == 0.0 && (BSIM4rsh > 0 \
-                 && (!BSIM4drainSquaresGiven && BSIM4rgeoMod != 0) \
+	      if (BSIM4drainConductance == 0.0 && (BSIM4rsh > 0 
+                 && (!BSIM4drainSquaresGiven && BSIM4rgeoMod != 0) 
                    || BSIM4rdsMod != 0 ) ) begin
                   BSIM4drainConductance = 1.0e3; /* mho */
 	          $strobe ("Warning: (instance %M) Drain diffusion conductance reset to 1.0e3 mho.\n");
@@ -7975,9 +7975,9 @@ module bsim4_va(d, g, s, b);
     
             if (verbose == 1) begin
               $strobe("BSIM4geoMod, BSIM4rgeoMod, d/s-conductance=",BSIM4geoMod, BSIM4rgeoMod,BSIM4drainConductance,BSIM4sourceConductance);
-              $strobe("ps,pd,ad,as(given):",BSIM4Pseff,BSIM4sourcePerimeter,BSIM4sourcePerimeterGiven,\
-                  BSIM4Pdeff,BSIM4drainPerimeter,BSIM4drainPerimeterGiven,\
-                  BSIM4Adeff,BSIM4drainArea,BSIM4drainAreaGiven,\
+              $strobe("ps,pd,ad,as(given):",BSIM4Pseff,BSIM4sourcePerimeter,BSIM4sourcePerimeterGiven,
+                  BSIM4Pdeff,BSIM4drainPerimeter,BSIM4drainPerimeterGiven,
+                  BSIM4Adeff,BSIM4drainArea,BSIM4drainAreaGiven,
                   BSIM4Aseff,BSIM4sourceArea,BSIM4sourceAreaGiven);
             end
             /* End of Rsd processing */
@@ -8995,10 +8995,11 @@ module bsim4_va(d, g, s, b);
 			BSIM4cbs = SourceSatCurrent * (evbs + BSIM4XExpBVS - 1.0
 				         - BSIM4xjbvs * T2) + _ckt_gmin * vbs_jct;                        
                     end 
-                    else
+                    else begin
                         BSIM4gbs = BSIM4SslpFwd + _ckt_gmin;
                         BSIM4cbs = BSIM4IVjsmFwd + BSIM4SslpFwd * (vbs_jct
 					 - BSIM4vjsmFwd) + _ckt_gmin * vbs_jct;
+                    end
                 end // case: 2
             endcase // case(BSIM4dioMod)
 
