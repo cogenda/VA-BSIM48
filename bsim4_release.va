@@ -31,11 +31,12 @@ HSPICE -- J-2014.09-SP2-1 for testing
  * Authors: Xuemei Xi, Kanyu M. Cao, Hui Wan, Mansun Chan, Chenming Hu.
  * Project Director: Prof. Chenming Hu.
  **********/
-
+//Indicate Xyce is the simulator used here, comment it out if runs with other simulator
+//`define XYCE
 `include "disciplines.vams" 
 `include "constants.vams"
 
-`define NOT_GIVEN -9.9999e-99
+`define NOT_GIVEN -12345789
 `define INT_NOT_GIVEN -9999999
 `define DEFAULT_TNOM 25
 `define N_MINLOG 1.0e-38
@@ -58,7 +59,7 @@ HSPICE -- J-2014.09-SP2-1 for testing
 
 // For now, set NOISE to 0 to disable noise.
 `define NOISE 0 
-`define NOISE_DERIVATIVES 0
+//`define NOISE_DERIVATIVES 1
 `define KboQ `P_K / `P_Q
 `define NMOS 1
 `define PMOS -1
@@ -270,8 +271,7 @@ HSPICE -- J-2014.09-SP2-1 for testing
                 Rend = Rsh * Weffcj / (3.0 * nuEnd * (DMCG + DMCI));\
         end\
         default: \
-            $strobe("Warning: (instance %M) Specified RGEO=%d not matched (BSIM4RdsEndIso \
-                     type !=1)\n", rgeo);\
+            $strobe("Warning: (instance %M) Specified RGEO=%d not matched (BSIM4RdsEndIso type !=1)\n", rgeo);\
         endcase \
     end 
 
@@ -297,8 +297,7 @@ HSPICE -- J-2014.09-SP2-1 for testing
                     Rend = Rsh * Weffcj / (6.0 * nuEnd * DMCG);\
             end\
             default:\
-                $strobe("Warning: (instance %M) Specified RGEO=%d not matched \
-                         (BSIM4RdsEndSha)\n", rgeo);\
+                $strobe("Warning: (instance %M) Specified RGEO=%d not matched (BSIM4RdsEndSha)\n", rgeo);\
             endcase \
         end \
         else begin\
@@ -320,8 +319,7 @@ HSPICE -- J-2014.09-SP2-1 for testing
                     Rend = Rsh * Weffcj / (6.0 * nuEnd * DMCG);\
             end\
             default:\
-                $strobe("Warning: (instance %M) Specified RGEO=%d not matched (BSIM4RdsEndSha \
-                         type !=1)\n", rgeo);\
+                $strobe("Warning: (instance %M) Specified RGEO=%d not matched (BSIM4RdsEndSha type !=1)\n", rgeo);\
             endcase \
         end \
     end 
@@ -450,7 +448,7 @@ HSPICE -- J-2014.09-SP2-1 for testing
 
 
 
-module bsim4_va(d, g, s, b);
+module bsim4va(d, g, s, b);
 
     analog function real BSIM4DioIjthVjmEval;
 
@@ -3448,7 +3446,6 @@ module bsim4_va(d, g, s, b);
             BSIM4icVDSGiven = (BSIM4icVDS == `NOT_GIVEN) ? 0 : 1;
             BSIM4icVGSGiven = (BSIM4icVGS == `NOT_GIVEN) ? 0 : 1;
             BSIM4icVBSGiven = (BSIM4icVBS == `NOT_GIVEN) ? 0 : 1;
-            BSIM4trnqsModGiven = (BSIM4trnqsMod == `INT_NOT_GIVEN) ? 0 : 1;
             BSIM4acnqsModGiven = (BSIM4acnqsMod == `INT_NOT_GIVEN) ? 0 : 1;
             BSIM4rbodyModGiven = (BSIM4rbodyMod == `INT_NOT_GIVEN) ? 0 : 1;
             BSIM4geoModGiven = (BSIM4geoMod == `INT_NOT_GIVEN) ? 0 : 1;
@@ -4815,7 +4812,17 @@ module bsim4_va(d, g, s, b);
                 BSIM4lnoff = 0.0;
             if (!BSIM4lvoffcvGiven)
                 BSIM4lvoffcv = 0.0;
-    
+            if (!BSIM4lgamma1Given)
+                 BSIM4lgamma1 = 0.0;
+            if (!BSIM4lgamma2Given)
+                 BSIM4lgamma2 = 0.0;
+            if (!BSIM4lvbxGiven)
+                 BSIM4lvbx = 0.0;
+            if (!BSIM4lk1Given)
+                 BSIM4lk1 = 0.0;
+            if (!BSIM4lk2Given)
+                 BSIM4lk2 = 0.0;
+
             /* Width dependence */
             if (!BSIM4wcdscGiven)
                 BSIM4wcdsc = 0.0;
@@ -5047,6 +5054,14 @@ module bsim4_va(d, g, s, b);
                 BSIM4wnoff = 0.0;
             if (!BSIM4wvoffcvGiven)
                 BSIM4wvoffcv = 0.0;
+            if (!BSIM4wgamma2Given)
+                 BSIM4wgamma2 = 0.0;
+            if (!BSIM4wvbxGiven)
+                 BSIM4wvbx = 0.0;
+            if (!BSIM4wk1Given)
+                 BSIM4wk1 = 0.0;
+            if (!BSIM4wk1Given)
+                 BSIM4wk1 = 0.0;
     
             /* Cross-term dependence */
             if (!BSIM4pcdscGiven)
@@ -5279,6 +5294,22 @@ module bsim4_va(d, g, s, b);
                 BSIM4pnoff = 0.0;
             if (!BSIM4pvoffcvGiven)
                 BSIM4pvoffcv = 0.0;
+            if (!BSIM4pphinGiven)
+                BSIM4pphin = 0.0;
+            if (!BSIM4pgamma1Given)
+                BSIM4pgamma1 = 0.0;
+            if (!BSIM4pgamma2Given)
+                BSIM4pgamma2 = 0.0;
+            if (!BSIM4pvbxGiven)
+                BSIM4pvbx = 0.0;
+            if (!BSIM4pvbxGiven)
+                BSIM4pvbx = 0.0;
+            if (!BSIM4pk1Given)
+                BSIM4pk1 = 0.0;
+            if (!BSIM4pk2Given)
+                BSIM4pk2 = 0.0;
+
+
     
             /* NOTE: Verilog-A does not support access to the modelcard
              * default Tnom value */
@@ -5465,8 +5496,20 @@ module bsim4_va(d, g, s, b);
             //        BSIM4.3
             if (!BSIM4lambdaGiven)
                 BSIM4lambda = 0.0;
+            if(!BSIM4llambdaGiven)
+                BSIM4llambda = 0.0;
+            if(!BSIM4wlambdaGiven)
+                BSIM4wlambda = 0.0;
+            if(!BSIM4plambdaGiven)
+                BSIM4plambda = 0.0;
             if (!BSIM4vtlGiven)
                 BSIM4vtl = 2.0e5;
+            if (!BSIM4lvtlGiven)
+                 BSIM4lvtl = 0.0;
+            if (!BSIM4wvtlGiven)
+                 BSIM4wvtl = 0.0;
+            if (!BSIM4pvtlGiven)
+                 BSIM4pvtl = 0.0;
             if (!BSIM4lcGiven)
                 BSIM4lc = 5.0e-9;
             if (!BSIM4xnGiven)
@@ -5493,6 +5536,8 @@ module bsim4_va(d, g, s, b);
                 BSIM4wlod = 0.0;      
             if (!BSIM4ku0Given)
                 BSIM4ku0 = 0.0;
+            if (!BSIM4lku0Given)
+                 BSIM4lku0 = 0.0;
             if (!BSIM4kvsatGiven)
                 BSIM4kvsat = 0.0;
             if (!BSIM4tku0Given)
@@ -7193,7 +7238,7 @@ module bsim4_va(d, g, s, b);
             
             BSIM4abulkCVfactor = 1.0 + pow((BSIM4clc / BSIM4leffCV), BSIM4cle);
             if(verbose == 1)
-              $strobe("BSIM4abulkCVfactor=", BSIM4abulkCVfactor);
+              $strobe("BSIM4abulkCVfactor=%g\n", BSIM4abulkCVfactor);
     
             T0 = (TRatio - 1.0);
             PowWeffWr = pow(BSIM4weffCJ * 1.0e6, BSIM4wr) * BSIM4nf;
@@ -7372,8 +7417,8 @@ module bsim4_va(d, g, s, b);
             BSIM4ldeb = sqrt( epssubl * Vtm0 / (`P_Q * BSIM4ndep * 1.0e6)) / 3.0;
             BSIM4acde = BSIM4acde * (  pow((BSIM4ndep / 2.0e16), -0.25));
             if(verbose ==1) begin
-              $strobe("BSIM4AechvbEdgeS,D=",BSIM4AechvbEdgeS, BSIM4AechvbEdgeD);
-              $strobe("BSIM4BechvbEdge,BSIM4Aechvb,BSIM4Bechvb=",BSIM4BechvbEdge,BSIM4Aechvb,BSIM4Bechvb);
+              $strobe("BSIM4AechvbEdgeS,D=%g,%g\n",BSIM4AechvbEdgeS, BSIM4AechvbEdgeD);
+              $strobe("BSIM4BechvbEdge,BSIM4Aechvb,BSIM4Bechvb=%g,%g,%g\n",BSIM4BechvbEdge,BSIM4Aechvb,BSIM4Bechvb);
             end
     
             if (BSIM4k1Given || BSIM4k2Given) begin
@@ -7974,8 +8019,9 @@ module bsim4_va(d, g, s, b);
             end
     
             if (verbose == 1) begin
-              $strobe("BSIM4geoMod, BSIM4rgeoMod, d/s-conductance=",BSIM4geoMod, BSIM4rgeoMod,BSIM4drainConductance,BSIM4sourceConductance);
-              $strobe("ps,pd,ad,as(given):",BSIM4Pseff,BSIM4sourcePerimeter,BSIM4sourcePerimeterGiven,
+              $strobe("BSIM4geoMod, BSIM4rgeoMod, d/s-conductance=%d,%d,%e,%e\n",BSIM4geoMod, BSIM4rgeoMod,BSIM4drainConductance,BSIM4sourceConductance);
+              $strobe("ps,pd,ad,as(given):%e,%e,%d,%e,%e,%d,%e,%e,%d,%e,%e,%d\n",
+                  BSIM4Pseff,BSIM4sourcePerimeter,BSIM4sourcePerimeterGiven,
                   BSIM4Pdeff,BSIM4drainPerimeter,BSIM4drainPerimeterGiven,
                   BSIM4Adeff,BSIM4drainArea,BSIM4drainAreaGiven,
                   BSIM4Aseff,BSIM4sourceArea,BSIM4sourceAreaGiven);
@@ -8241,7 +8287,7 @@ module bsim4_va(d, g, s, b);
 			toxpf = toxel - epsroxl/BSIM4epsrsub * Tcen;
 			niter = niter+1;
                         if(verbose == 1)
-                          $strobe("niter,toxpf,toxpi=",niter,toxpf,toxpi);
+                          $strobe("niter,toxpf,toxpi=%g,%g,%g\n",niter,toxpf,toxpi);
 		      end
 		      BSIM4toxp = toxpf;  //changed code order to fix
 		      BSIM4coxp = epsroxl * `EPS0 / BSIM4toxp;
@@ -8251,8 +8297,8 @@ module bsim4_va(d, g, s, b);
 	    //	  here->BSIM4coxp = model->BSIM4coxp;
             //}            
             if(verbose == 1) begin
-              $strobe("New model param check starts...");
-              $strobe("Topology Selection: rdsmod=%d rgatemod=%d rbodymod=%d", BSIM4rdsMod, BSIM4rgateMod, BSIM4rbodyMod);
+              $strobe("New model param check starts...\n");
+              $strobe("Topology Selection: rdsmod=%d rgatemod=%d rbodymod=%d\n", BSIM4rdsMod, BSIM4rgateMod, BSIM4rbodyMod);
             end
             if ((BSIM4version-4.8) > 0.0001) 
                 $strobe("\nWarning: (instance %M) The latest version is BSIM4.8.0; you specified a wrong version number.\n");
@@ -8872,7 +8918,7 @@ module bsim4_va(d, g, s, b);
         end // initial_step
 
         if(verbose == 1)
-          $strobe("New model main evaluation starts...");
+          $strobe("New model main evaluation starts...\n");
         //New model main evaluation starts
 
         // Get voltages:      
@@ -8891,7 +8937,7 @@ module bsim4_va(d, g, s, b);
         vses = BSIM4type * V(s,si);
         vdes = BSIM4type * V(d,si);
         if(verbose == 1)
-          $strobe("Volts:",vds,vgs,vbs,vges,vgms,vdbs,vsbs,vses,vdes);
+          $strobe("Volts:%g,%g,%g,%g,%g,%g,%g,%g,%g\n",vds,vgs,vbs,vges,vgms,vdbs,vsbs,vses,vdes);
 
 
         /* Calculate DC currents and their derivatives */
@@ -9200,8 +9246,8 @@ module bsim4_va(d, g, s, b);
 	  			+ BSIM4DswTempRevSatCur * (T4 - 1.0)
 	  			+ BSIM4DswgTempRevSatCur * (T6 - 1.0));                                
         if(verbose == 1) begin
-          $strobe("BSIM4cbd,s=", BSIM4cbd, BSIM4cbs);
-          $strobe("BSIM4cbd's RHS=", BSIM4DjctTempRevSatCur,BSIM4DswTempRevSatCur, BSIM4DswgTempRevSatCur,T2,T4,T6);
+          $strobe("BSIM4cbd,s=%g,%g\n", BSIM4cbd, BSIM4cbs);
+          $strobe("BSIM4cbd's RHS=%g,%g,%g,%g,%g,%g\n", BSIM4DjctTempRevSatCur,BSIM4DswTempRevSatCur, BSIM4DswgTempRevSatCur,T2,T4,T6);
         end
         /* End of diode DC model */
         
@@ -9229,8 +9275,8 @@ module bsim4_va(d, g, s, b);
             Vbseff = here_BSIM4vbsc * (1.0 + T2);
         end 
         if(verbose == 1) begin
-          $strobe("Vbseff=", Vbseff,Vds,Vgs,Vbs,Vdb);
-          $strobe("gbs,d=", BSIM4gbs,BSIM4gbd);
+          $strobe("Vbseff=%g,%g,%g,%g,%g\n", Vbseff,Vds,Vgs,Vbs,Vdb);
+          $strobe("gbs,d=%g,%g\n", BSIM4gbs,BSIM4gbd);
         end
 
         /* JX: Correction to forward body bias */
@@ -9242,24 +9288,24 @@ module bsim4_va(d, g, s, b);
         Phis = BSIM4phi - Vbseff;
         sqrtPhis = sqrt(Phis);
         if(verbose == 1)
-          $strobe("Vbseff=", Vbseff);
+          $strobe("Vbseff=%g\n", Vbseff);
         
         Xdep = BSIM4Xdep0 * sqrtPhis / BSIM4sqrtPhi;
 
         Leff = BSIM4leff;
         Vtm = BSIM4vtm;
         if(verbose == 1) begin
-          $strobe("Leff=", Leff);
-          $strobe("Vtm=", Vtm);
-          $strobe("BSIM4phi=", BSIM4phi);
-          $strobe("Xdep=", Xdep);
-          $strobe("here_BSIM4vbsc=", here_BSIM4vbsc);
-          $strobe("DrainSatCurrent,SourceSatCurrent=", DrainSatCurrent, SourceSatCurrent);
+          $strobe("Leff=%g\n", Leff);
+          $strobe("Vtm=%g\n", Vtm);
+          $strobe("BSIM4phi=%g\n", BSIM4phi);
+          $strobe("Xdep=%g\n", Xdep);
+          $strobe("here_BSIM4vbsc=%g\n", here_BSIM4vbsc);
+          $strobe("DrainSatCurrent,SourceSatCurrent=%g,%g\n", DrainSatCurrent, SourceSatCurrent);
         end
 
 `ifdef NOISE_DERIVATIVES
         if(verbose == 1)
-          $strobe("analysis(noise)", analysis("noise"));
+          $strobe("analysis(noise)=%g\n", analysis("noise"));
         if ((BSIM4tnoiMod == 1) && analysis("noise") == `NOISE) begin
             // Derivatives only needed for this mode.
             if (T0 >= 0.0)
@@ -9324,7 +9370,7 @@ module bsim4_va(d, g, s, b);
         BSIM4thetavth = BSIM4dvt0 * Theta0;
         Delt_vth = BSIM4thetavth * V0;
         if(verbose == 1)
-          $strobe("Delt_vth=", Delt_vth, BSIM4dvt0,lt1,BSIM4factor1,BSIM4vbi);
+          $strobe("Delt_vth=%g,%g,%g,%g,%g\n", Delt_vth, BSIM4dvt0,lt1,BSIM4factor1,BSIM4vbi);
 
 `ifdef NOISE_DERIVATIVES
         if ((BSIM4tnoiMod == 1) && analysis("noise") == `NOISE) begin
@@ -9409,7 +9455,7 @@ module bsim4_va(d, g, s, b);
             here_BSIM4k2ox * Vbseff - Delt_vth - T2 + (BSIM4k3 +
             BSIM4k3b * Vbseff) * Vth_NarrowW + T1 - DIBL_Sft;      
         if(verbose == 1)
-          $strobe("Vth= ", Vth,here_BSIM4vth0,sqrtPhis,Lpe_Vb,here_BSIM4k2ox,
+          $strobe("Vth=%g,%g,%g,%g,%g,%g,%g,%g,%g,%g,%g\n", Vth,here_BSIM4vth0,sqrtPhis,Lpe_Vb,here_BSIM4k2ox,
            Vbseff,Delt_vth,T2, Vth_NarrowW,T1,DIBL_Sft);
 
 `ifdef NOISE_DERIVATIVES
@@ -9473,7 +9519,7 @@ module bsim4_va(d, g, s, b);
         end
 `endif
         if(verbose == 1)
-          $strobe("n=", n);
+          $strobe("n=%g\n", n);
         
         /* Vth correction for Pocket implant */
         if (BSIM4dvtp0 > 0.0) begin
@@ -9527,7 +9573,7 @@ module bsim4_va(d, g, s, b);
 	  dVth_dVd = dVth_dVd - dDITS_Sft2_dVd;
 	end
         if(verbose == 1) 
-          $strobe("Vth=", Vth);      
+          $strobe("Vth=%g\n", Vth);      
 
         /* Poly Gate Si Depletion Effect */
         T0 = here_BSIM4vfb + BSIM4phi;
@@ -9536,7 +9582,7 @@ module bsim4_va(d, g, s, b);
 	else
 	    T1 = BSIM4epsrgate * `EPS0;        
         if(verbose == 1) begin
-          $strobe("T0,T1=", T0, T1);
+          $strobe("T0,T1=%g,%g\n", T0, T1);
         end
 
         `BSIM4polyDepletion(T0, BSIM4ngate,T1, BSIM4coxe, vgs, vgs_eff, dvgs_eff_dvg)
@@ -9560,9 +9606,9 @@ module bsim4_va(d, g, s, b);
 
         Vgst = Vgs_eff - Vth;
         if(verbose == 1) begin
-          $strobe("T0,T1=", T0, T1);
-          $strobe("Vgst=", Vgst,Vgs_eff,vgs,vgd);
-          $strobe("Vgs,d_eff=", vgs_eff, vgd_eff);
+          $strobe("T0,T1=%g,%g\n", T0, T1);
+          $strobe("Vgst=%g,%g,%g\n", Vgst,Vgs_eff,vgs,vgd);
+          $strobe("Vgs,d_eff=%g,%g\n", vgs_eff, vgd_eff);
         end
         
         /* Calculate Vgsteff */
@@ -9666,7 +9712,7 @@ module bsim4_va(d, g, s, b);
         end
 `endif
         if(verbose == 1) 
-        $strobe("Vgsteff=", Vgsteff);
+        $strobe("Vgsteff=%g\n", Vgsteff);
         
         /* Calculate Effective Channel Geometry */
         T9 = sqrtPhis - BSIM4sqrtPhi;
@@ -9692,7 +9738,7 @@ module bsim4_va(d, g, s, b);
         end
 `endif
         if(verbose == 1) 
-        $strobe("Weff=", Weff);
+        $strobe("Weff=%g\n", Weff);
 
         if (BSIM4rdsMod == 1)
             Rds = 0.0;
@@ -9733,7 +9779,7 @@ module bsim4_va(d, g, s, b);
         end
 `endif
         if(verbose == 1) 
-        $strobe("Rds=", Rds);
+        $strobe("Rds=%g\n", Rds);
         
         /* Calculate Abulk */
         T9 = 0.5 * BSIM4k1ox * Lpe_Vb / sqrtPhis;
@@ -9826,7 +9872,7 @@ module bsim4_va(d, g, s, b);
 `endif
 
         if(verbose == 1) begin 
-          $strobe("Abulk,0=", Abulk,Abulk0);
+          $strobe("Abulk,0=%g,%g\n", Abulk,Abulk0);
         end
         
         /* Mobility calculation */
@@ -9922,8 +9968,12 @@ module bsim4_va(d, g, s, b);
             //T9 = T9 * T9;
         end
 
+        if(verbose == 1) 
+          $strobe("T0=%g,T2=%g,T3=%g,T12=%g,T9=%g,T10=%g,T5=%g,T6=%g,T8=%g\n", T0,T2,T3,T12,T9,T10,T5,T6,T8);
         BSIM4ueff = here_BSIM4u0temp / Denomi;
         ueff      = BSIM4ueff;
+        if(verbose == 1) 
+          $strobe("ueff=%g,here_BSIM4u0temp=%g,Denomi=%g\n", ueff,here_BSIM4u0temp,Denomi);
 
 `ifdef NOISE_DERIVATIVES
         //Enh: not impl mobmod > 2 for Noise
@@ -9978,8 +10028,6 @@ module bsim4_va(d, g, s, b);
         end
 `endif
 
-        if(verbose == 1) 
-        $strobe("ueff=", ueff);
         
         /* Saturation Drain Voltage  Vdsat */
         WVCox = Weff * here_BSIM4vsattemp * BSIM4coxe;
@@ -9998,7 +10046,7 @@ module bsim4_va(d, g, s, b);
 `endif
 
         if(verbose == 1) begin 
-          $strobe("Esat,L=", Esat,EsatL);
+          $strobe("Esat,L=%g,%g\n", Esat,EsatL);
         end
             
         /* Sqrt() */
@@ -10030,7 +10078,7 @@ module bsim4_va(d, g, s, b);
 `endif
 
         if(verbose == 1) 
-        $strobe("Lambda=", Lambda);
+        $strobe("Lambda=%g\n", Lambda);
         
         Vgst2Vtm = Vgsteff + 2.0 * Vtm;
         if ((Rds == 0.0) && (Lambda == 1.0)) begin
@@ -10113,7 +10161,7 @@ module bsim4_va(d, g, s, b);
 `endif
 
         if(verbose == 1) 
-        $strobe("Vdsat=", Vdsat);
+        $strobe("Vdsat=%g\n", Vdsat);
         
         /* Calculate Vdseff */
         T1 = Vdsat - Vds - BSIM4delta;
@@ -10141,7 +10189,7 @@ module bsim4_va(d, g, s, b);
         diffVds = Vds - Vdseff;
         here_Vdseff = Vdseff;
         if(verbose == 1) 
-        $strobe("diffVds=", diffVds);
+        $strobe("diffVds=%g\n", diffVds);
 
 `ifdef NOISE_DERIVATIVES
         if ((BSIM4tnoiMod == 1) && analysis("noise") == `NOISE) begin
@@ -10174,7 +10222,7 @@ module bsim4_va(d, g, s, b);
 `endif
 
         if(verbose == 1) 
-        $strobe("Vdseff=", Vdseff);
+        $strobe("Vdseff=%g\n", Vdseff);
 
         /* Velocity Overshoot */
         if((BSIM4lambdaGiven) && (BSIM4lambda > 0.0) ) begin
@@ -10218,7 +10266,7 @@ module bsim4_va(d, g, s, b);
 `endif
 
         if(verbose == 1) 
-        $strobe("Vasat=", Vasat);
+        $strobe("Vasat=%g\n", Vasat);
         
         /* Calculate Idl first */
         tmp1 = here_BSIM4vtfbphi2;
@@ -10295,7 +10343,7 @@ module bsim4_va(d, g, s, b);
 `endif
 
         if(verbose == 1) 
-        $strobe("Idl=", Idl);
+        $strobe("Idl=%g\n", Idl);
         
         /* Calculate degradation factor due to pocket implant */
 
@@ -10321,7 +10369,7 @@ module bsim4_va(d, g, s, b);
 `endif
         end 
         if(verbose == 1) 
-        $strobe("FP=", FP);
+        $strobe("FP=%g\n", FP);
         
         /* Calculate VACLM */
         T8 = BSIM4pvag / EsatL;
@@ -10401,7 +10449,7 @@ module bsim4_va(d, g, s, b);
 `endif
         end 
         if(verbose == 1) 
-          $strobe("VACLM=", VACLM);
+          $strobe("VACLM=%g\n", VACLM);
         
         /* Calculate VADIBL */
         if (BSIM4thetaRout > `MIN_EXP) begin
@@ -10429,7 +10477,7 @@ module bsim4_va(d, g, s, b);
         VADIBL = `MAX_EXP;
 
         if(verbose == 1) 
-          $strobe("ELSE VADIBL=", VADIBL);
+          $strobe("ELSE VADIBL=%g\n", VADIBL);
 
 `ifdef NOISE_DERIVATIVES
         if ((BSIM4tnoiMod == 1) && analysis("noise") == `NOISE) begin
@@ -10487,7 +10535,7 @@ module bsim4_va(d, g, s, b);
             end
         end
         if(verbose == 1) 
-          $strobe("NOISE VADIBL=", VADIBL);
+          $strobe("NOISE VADIBL=%g\n", VADIBL);
 `endif 
 
         
@@ -10504,7 +10552,7 @@ module bsim4_va(d, g, s, b);
 `endif
 
         if(verbose == 1) 
-        $strobe("Va=", Va);
+        $strobe("Va=%g\n", Va);
         
         /* Calculate VADITS */
         T0 = BSIM4pditsd * Vds;
@@ -10522,7 +10570,7 @@ module bsim4_va(d, g, s, b);
             VADITS = `MAX_EXP;
 
         if(verbose == 1) 
-        $strobe("VADITS=", VADITS);
+        $strobe("VADITS=%g\n", VADITS);
 
 `ifdef NOISE_DERIVATIVES
         if ((BSIM4tnoiMod == 1) && analysis("noise") == `NOISE) begin
@@ -10576,27 +10624,27 @@ module bsim4_va(d, g, s, b);
         VASCBE = `MAX_EXP;
        
        if(verbose == 1) 
-       $strobe("VASCBE=", VASCBE);
+       $strobe("VASCBE=%g\n", VASCBE);
         
         /* Add DIBL to Ids */
         T9 = diffVds / VADIBL;
         T0 = 1.0 + T9;
         if(verbose == 1) begin 
-          $strobe("T9=", T9);
-          $strobe("VADIBL=", VADIBL);
-          $strobe("diffVds=", diffVds);
-          $strobe("Idl=", Idl);
+          $strobe("T9=%g\n", T9);
+          $strobe("VADIBL=%g\n", VADIBL);
+          $strobe("diffVds=%g\n", diffVds);
+          $strobe("Idl=%g\n", Idl);
         end
         Idsa = Idl * T0;
 
         /* Add DITS to Ids */
         T9 = diffVds / VADITS;
         if(verbose == 1) 
-          $strobe("T9=", T9);
+          $strobe("T9=%g\n", T9);
         T0 = 1.0 + T9;
         Idsa = Idsa * T0;
         if(verbose == 1) 
-        $strobe("Idsa=", Idsa);
+        $strobe("Idsa=%g\n", Idsa);
 
         /* Add CLM to Ids */
         T0 = ln(Va / Vasat);
@@ -10605,7 +10653,7 @@ module bsim4_va(d, g, s, b);
     
         Idsa = Idsa * T9;
         if(verbose == 1) 
-        $strobe("Idsa=", Idsa);
+        $strobe("Idsa=%g\n", Idsa);
 
 `ifdef NOISE_DERIVATIVES
         if ((BSIM4tnoiMod == 1) && analysis("noise") == `NOISE) begin
@@ -10688,7 +10736,7 @@ module bsim4_va(d, g, s, b);
         end
 `endif
         if(verbose == 1) 
-          $strobe("Isub=", Isub);
+          $strobe("Isub=%g\n", Isub);
 
         /* Add SCBE to Ids */
         T9 = diffVds / VASCBE;
@@ -10721,8 +10769,8 @@ module bsim4_va(d, g, s, b);
 
         cdrain = Ids * Vdseff;
         if(verbose == 1) begin 
-          $strobe("Ids=", Ids);
-          $strobe("cdrain=", cdrain);
+          $strobe("Ids=%g\n", Ids);
+          $strobe("cdrain=%g\n", cdrain);
         end
         
         /* Source End Velocity Limit  */
@@ -10743,7 +10791,7 @@ module bsim4_va(d, g, s, b);
             //Fsevl = 1.0 / exp(ln(T2) / T0);
             cdrain = cdrain * Fsevl;
             if(verbose == 1) 
-              $strobe("cdrain (source end velocity limit)=", cdrain); 
+              $strobe("cdrain (source end velocity limit)=%g\n", cdrain); 
         end
             IdovVds = Ids;
             if( IdovVds <= 1.0e-9) 
@@ -10785,18 +10833,18 @@ module bsim4_va(d, g, s, b);
             T4 = BSIM4rs0 * 0.5;
             Rs = BSIM4rswmin + T3 * T4;
             if(verbose == 1) begin
-              $strobe("BSIM4vfbsd=",BSIM4vfbsd);
-              $strobe("BSIM4prwg=",BSIM4prwg);
-              $strobe("BSIM4prwb=",BSIM4prwb);
-              $strobe("BSIM4rs0=",BSIM4rs0);
-              $strobe("BSIM4rswmin=",BSIM4rswmin);
-              $strobe("vgs_eff=",vgs_eff);
-              $strobe("T0=",T0);
-              $strobe("T1=",T1);
-              $strobe("T2=",T2);
-              $strobe("T3=",T3);
-              $strobe("T4=",T4);
-              $strobe("Rs=",Rs);
+              $strobe("BSIM4vfbsd=%g\n",BSIM4vfbsd);
+              $strobe("BSIM4prwg=%g\n",BSIM4prwg);
+              $strobe("BSIM4prwb=%g\n",BSIM4prwb);
+              $strobe("BSIM4rs0=%g\n",BSIM4rs0);
+              $strobe("BSIM4rswmin=%g\n",BSIM4rswmin);
+              $strobe("vgs_eff=%g\n",vgs_eff);
+              $strobe("T0=%g\n",T0);
+              $strobe("T1=%g\n",T1);
+              $strobe("T2=%g\n",T2);
+              $strobe("T3=%g\n",T3);
+              $strobe("T4=%g\n",T4);
+              $strobe("Rs=%g\n",Rs);
             end
 
             /* Rd(V) */
@@ -10838,7 +10886,7 @@ module bsim4_va(d, g, s, b);
             T0 = 1.0 + BSIM4sourceConductance * Rs;
             BSIM4gstot = BSIM4sourceConductance / T0;
             if(verbose == 1) 
-              $strobe("BSIM4gstot=",BSIM4gstot);
+              $strobe("BSIM4gstot=%g\n",BSIM4gstot);
 
             T0 = -BSIM4gstot * BSIM4gstot;
             dgstot_dvd = 0.0; /* place holder */
@@ -11013,8 +11061,8 @@ module bsim4_va(d, g, s, b);
                 /* End of New GIDL */
        end
        if(verbose == 1) begin
-          $strobe("Igisl=", Igisl);
-          $strobe("Igidl=", Igidl);
+          $strobe("Igisl=%g\n", Igisl);
+          $strobe("Igidl=%g\n", Igidl);
        end
 	   	/*End of Gidl*/
        
@@ -11099,7 +11147,7 @@ module bsim4_va(d, g, s, b);
 `endif
 
         if(verbose == 1) 
-          $strobe("Voxdepinv=", Voxdepinv);
+          $strobe("Voxdepinv=%g\n", Voxdepinv);
 
         if(BSIM4tempMod < 2)
             tmp = Vtm;
@@ -11202,7 +11250,7 @@ module bsim4_va(d, g, s, b);
                 T6 = exp(T5);
             Igs = T11 * T2 * T6;
             if(verbose == 1) 
-              $strobe("Igs=", Igs,T11,  T2,  T6, BSIM4aigsd,T5, T3, T4,T12,vgs_eff);
+              $strobe("Igs=%g,%g,%g,%g,%g,%g,%g,%g,%g,%g\n", Igs,T11,  T2,  T6, BSIM4aigsd,T5, T3, T4,T12,vgs_eff);
 
             T0 = vgd - (BSIM4vfbsd + BSIM4vfbsdoff);
             vgd_eff = sqrt(T0 * T0 + 1.0e-4);
@@ -11222,7 +11270,7 @@ module bsim4_va(d, g, s, b);
 
             Igd = T11 * T2 * T6;
             if(verbose == 1) 
-              $strobe("Igd=", Igd,T11,  T2,  T6);
+              $strobe("Igd=%g,%g,%g,%g\n", Igd,T11,  T2,  T6);
         end
         else begin //BSIM4igcMod == 0
           Igcs = 0.0;
@@ -11260,7 +11308,7 @@ module bsim4_va(d, g, s, b);
 
             Igbacc = T11 * T2 * T6;
             if(verbose == 1) 
-              $strobe("Igbacc=", Igbacc);
+              $strobe("Igbacc=%g\n", Igbacc);
 
             T0 = tmp * BSIM4nigbinv;
             T1 = Voxdepinv - BSIM4eigbinv;
@@ -11291,7 +11339,7 @@ module bsim4_va(d, g, s, b);
 
             Igbinv = T11 * T2 * T6;
             if(verbose == 1) 
-              $strobe("Igbinv=", Igbinv);
+              $strobe("Igbinv=%g\n", Igbinv);
 
             Igb = Igbinv + Igbacc;
 
@@ -12287,8 +12335,8 @@ module bsim4_va(d, g, s, b);
         Iddi = V(d,di) * (BSIM4drainConductance /
             (1 + Rd * BSIM4drainConductance));
         if(verbose == 1) begin 
-          $strobe("In rdsmod=1 Issi=", Issi);
-          $strobe("In rdsmod Iddi=", Iddi);      
+          $strobe("In rdsmod=1 Issi=%g\n", Issi);
+          $strobe("In rdsmod Iddi=%g\n", Iddi);      
         end
        I(s,si) <+ Issi;
        I(d,di) <+ Iddi;    
@@ -12313,8 +12361,8 @@ module bsim4_va(d, g, s, b);
     end
     3: begin // 2 internal gate nodes, TODO check `gcgmgmb needs?
        if(verbose == 1) begin 
-        $strobe("BSIM4grgeltd=",BSIM4grgeltd);
-        $strobe("BSIM4gcrg=",BSIM4gcrg);
+        $strobe("BSIM4grgeltd=%g\n",BSIM4grgeltd);
+        $strobe("BSIM4gcrg=%g\n",BSIM4gcrg);
        end
        V(g,gm)  <+ I(g,gm)  / BSIM4grgeltd;
        V(gm,gi) <+ I(gm,gi) / BSIM4gcrg;           
@@ -12341,11 +12389,11 @@ module bsim4_va(d, g, s, b);
     I(dbulk,di) <+ BSIM4type*BSIM4cbd;    
 
     if(verbose == 1) begin 
-      $strobe("BSIM4Ibs,gbs=", BSIM4cbs, BSIM4gbs);
-      $strobe("BSIM4Ibd,gbd=", BSIM4cbd, BSIM4gbd);
+      $strobe("BSIM4Ibs,gbs=%g,%g\n", BSIM4cbs, BSIM4gbs);
+      $strobe("BSIM4Ibd,gbd=%g,%g\n", BSIM4cbd, BSIM4gbd);
     if (BSIM4rbodyMod) begin
-      $strobe("Vbody(bi,db,sb)=", V(bi,s),V(dbulk,s),V(sbulk,s));
-      $strobe("rbodymod,grbxx=", BSIM4rbodyMod,BSIM4grbps,BSIM4grbsb,BSIM4grbpb,BSIM4grbdb,BSIM4grbpd);
+      $strobe("Vbody(bi,db,sb)=%g,%g,%g\n", V(bi,s),V(dbulk,s),V(sbulk,s));
+      $strobe("rbodymod,grbxx=%g,%g,%g,%g,%g,%g\n", BSIM4rbodyMod,BSIM4grbps,BSIM4grbsb,BSIM4grbpb,BSIM4grbdb,BSIM4grbpd);
     end
     end
     // Charge contributions      
@@ -12358,19 +12406,19 @@ module bsim4_va(d, g, s, b);
     I(dbulk,di) <+ BSIM4type * ddt(BSIM4qbd);
 
     if(verbose == 1) begin 
-      $strobe("qgate=", qgate);
-      $strobe("qdrn=", qdrn);   
-      $strobe("qsrc=", qsrc);
-      $strobe("qgmid=", qgmid);
-      $strobe("qbulk=", qbulk);
-      $strobe("qgb=", qgb);
-      $strobe("qgmb=", qgmb);
-      $strobe("qgdo=", qgdo);
-      $strobe("qgso=", qgso);
-      $strobe("here->BSIM4qbs=", BSIM4qbs);
-      $strobe("here->BSIM4qbd=", BSIM4qbd);
-      $strobe("BSIM4type=", BSIM4type);            
-      $strobe("BSIM4mode=", BSIM4mode);            
+      $strobe("qgate=%g\n", qgate);
+      $strobe("qdrn =%g\n", qdrn);   
+      $strobe("qsrc =%g\n", qsrc);
+      $strobe("qgmid=%g\n", qgmid);
+      $strobe("qbulk=%g\n", qbulk);
+      $strobe("qgb  =%g\n", qgb);
+      $strobe("qgmb =%g\n", qgmb);
+      $strobe("qgdo =%g\n", qgdo);
+      $strobe("qgso =%g\n", qgso);
+      $strobe("here->BSIM4qbs=%g\n", BSIM4qbs);
+      $strobe("here->BSIM4qbd=%g\n", BSIM4qbd);
+      $strobe("BSIM4type=%d\n", BSIM4type);            
+      $strobe("BSIM4mode=%d\n", BSIM4mode);            
     end
 
     // Noise
@@ -12511,4 +12559,9 @@ module bsim4_va(d, g, s, b);
     end
    
 endmodule // end of bsim4_va
+
+
+
+
+
 
