@@ -32,7 +32,7 @@ HSPICE -- J-2014.09-SP2-1 for testing
  * Project Director: Prof. Chenming Hu.
  **********/
 //Indicate Xyce is the simulator used here, comment it out if runs with other simulator
-//`define XYCE
+`define __XYCE_VAMS__        
 `include "disciplines.vams" 
 `include "constants.vams"
 
@@ -2097,9 +2097,8 @@ module bsim4va(d, g, s, b);
 
     analog begin
 
-        T = $temperature;
-
         @(initial_step) begin
+            T = $temperature; //move into @initial_step block to avoid va-parsing error
             BSIM4Adeff = 0.0;
             BSIM4Aseff = 0.0;
             BSIM4DslpFwd = 0.0;
@@ -12352,29 +12351,54 @@ module bsim4va(d, g, s, b);
        V(gm,gi) <+ 0.0;
     end
     1: begin // Constant resistance
+`ifdef __XYCE_VAMS__
+       I(g,gm)  <+ V(g,gm) * BSIM4grgeltd;
+`else
        V(g,gm)  <+ I(g,gm) / BSIM4grgeltd;
+`endif
+       
        V(gm,gi) <+ 0.0;
     end
     2: begin // Variable resistance
        V(g,gm)   <+ 0.0;
+`ifdef __XYCE_VAMS__
+       I(gm,gi)  <+ V(gm,gi) * (BSIM4gcrg + BSIM4grgeltd);
+`else
        V(gm,gi)  <+ I(gm,gi) / (BSIM4gcrg + BSIM4grgeltd);
+`endif
     end
     3: begin // 2 internal gate nodes, TODO check `gcgmgmb needs?
        if(verbose == 1) begin 
         $strobe("BSIM4grgeltd=%g\n",BSIM4grgeltd);
         $strobe("BSIM4gcrg=%g\n",BSIM4gcrg);
        end
+`ifdef __XYCE_VAMS__
+       I(g,gm)  <+ V(g,gm)  * BSIM4grgeltd;
+       I(gm,gi) <+ V(gm,gi) * BSIM4gcrg;           
+`else
        V(g,gm)  <+ I(g,gm)  / BSIM4grgeltd;
        V(gm,gi) <+ I(gm,gi) / BSIM4gcrg;           
+`endif
+       
     end
     endcase // case(BSIM4rgateMod)
         
     if (BSIM4rbodyMod) begin
+    //using I(a,b)<+... instead of V(a,b)<+.. for node collapse condition, or else Xyce fail
+`ifdef __XYCE_VAMS__
+//using I, both ok for me
+        I(sbulk,bi) <+ V(sbulk,bi) * BSIM4grbps;
+        I(sbulk,b)  <+ V(sbulk,b)  * BSIM4grbsb;
+        I(b,bi)     <+ V(b,bi)     * BSIM4grbpb;
+        I(b,dbulk)  <+ V(b,dbulk)  * BSIM4grbdb;
+        I(bi,dbulk) <+ V(bi,dbulk) * BSIM4grbpd;  
+`else
         V(sbulk,bi) <+ I(sbulk,bi) / BSIM4grbps;
         V(sbulk,b)  <+ I(sbulk,b)  / BSIM4grbsb;
         V(b,bi)     <+ I(b,bi)     / BSIM4grbpb;
         V(b,dbulk)  <+ I(b,dbulk)  / BSIM4grbdb;
         V(bi,dbulk) <+ I(bi,dbulk) / BSIM4grbpd;       
+`endif
     end
     else begin
       V(sbulk,b)  <+ 0.0;
@@ -12559,7 +12583,6 @@ module bsim4va(d, g, s, b);
     end
    
 endmodule // end of bsim4_va
-
 
 
 
