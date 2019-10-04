@@ -18,6 +18,7 @@ noise:lintnoi, tnoic, rnoic not required to support
 
 Extra model parameters:
 _ckt_gmin: model param to pass netlsit level gmin to va for diode current
+min:       model param changed to _min to avoid to coflict with va builtin function min()
 verbose:   model param to print debug information (default: 0)
 type:      polarity 1: nmos(default), -1:pmos
 
@@ -198,7 +199,7 @@ HSPICE -- J-2014.09-SP2-1 for testing
         Ad = ADiso + (nf - 1.0) * ADsha;\
     end \
     default: \
-         $strobe("Warning: (instance %M) Specified GEO=%d not matched (BSIM4PAeffGeo)", geo); \
+         $strobe("Warning: (instance X*) Specified GEO=%d not matched (BSIM4PAeffGeo)", geo); \
     endcase 
 
 
@@ -245,7 +246,7 @@ HSPICE -- J-2014.09-SP2-1 for testing
                 Rend = Rsh * Weffcj / (3.0 * nuEnd * (DMCG + DMCI));\
         end\
         default:  \
-            $strobe("Warning: (instance %M) Specified RGEO = %d not matched (BSIM4RdsEndIso)\n", \
+            $strobe("Warning: (instance X*) Specified RGEO = %d not matched (BSIM4RdsEndIso)\n", \
                      rgeo);\
         endcase \
     end \
@@ -271,7 +272,7 @@ HSPICE -- J-2014.09-SP2-1 for testing
                 Rend = Rsh * Weffcj / (3.0 * nuEnd * (DMCG + DMCI));\
         end\
         default: \
-            $strobe("Warning: (instance %M) Specified RGEO=%d not matched (BSIM4RdsEndIso type !=1)\n", rgeo);\
+            $strobe("Warning: (instance X*) Specified RGEO=%d not matched (BSIM4RdsEndIso type !=1)\n", rgeo);\
         endcase \
     end 
 
@@ -297,7 +298,7 @@ HSPICE -- J-2014.09-SP2-1 for testing
                     Rend = Rsh * Weffcj / (6.0 * nuEnd * DMCG);\
             end\
             default:\
-                $strobe("Warning: (instance %M) Specified RGEO=%d not matched (BSIM4RdsEndSha)\n", rgeo);\
+                $strobe("Warning: (instance X*) Specified RGEO=%d not matched (BSIM4RdsEndSha)\n", rgeo);\
             endcase \
         end \
         else begin\
@@ -319,7 +320,7 @@ HSPICE -- J-2014.09-SP2-1 for testing
                     Rend = Rsh * Weffcj / (6.0 * nuEnd * DMCG);\
             end\
             default:\
-                $strobe("Warning: (instance %M) Specified RGEO=%d not matched (BSIM4RdsEndSha type !=1)\n", rgeo);\
+                $strobe("Warning: (instance X*) Specified RGEO=%d not matched (BSIM4RdsEndSha type !=1)\n", rgeo);\
             endcase \
         end \
     end 
@@ -433,7 +434,7 @@ HSPICE -- J-2014.09-SP2-1 for testing
             end \
         end \
         default: \
-            $strobe("Warning: (instance %M) Specified GEO=%d not matched (BSIM4RdseffGeo)",\
+            $strobe("Warning: (instance X*) Specified GEO=%d not matched (BSIM4RdseffGeo)",\
                      geo);\
         endcase \
         if (Rint <= 0.0)\
@@ -443,7 +444,7 @@ HSPICE -- J-2014.09-SP2-1 for testing
         else\
             Rtot = Rint * Rend / (Rint + Rend);\
         if (Rtot==0.0)\
-            $strobe("Warning: (instance %M) Zero resistance returned from RdseffGeo\n");\
+            $strobe("Warning: (instance X*) Zero resistance returned from RdseffGeo\n");\
     end
 
 
@@ -4137,7 +4138,7 @@ module bsim4va(d, g, s, b);
                && (BSIM4mobMod != 2) && (BSIM4mobMod != 3) && (BSIM4mobMod != 4)
                && (BSIM4mobMod != 5) && (BSIM4mobMod != 6) ) begin
                 BSIM4mobMod = 0;
-                $strobe("Warning: (instance %M) mobMod has been set to its default value: 0.\n");
+                $strobe("Warning: (instance X*) mobMod has been set to its default value: 0.\n");
             end 
     
             if (!BSIM4binUnitGiven) 
@@ -4150,7 +4151,7 @@ module bsim4va(d, g, s, b);
             else if ((BSIM4dioMod != 0) && (BSIM4dioMod != 1)
                && (BSIM4dioMod != 2)) begin
                 BSIM4dioMod = 1;
-                $strobe("Warning: (instance %M) dioMod has been set to its default value: 1.\n");
+                $strobe("Warning: (instance X*) dioMod has been set to its default value: 1.\n");
             end 
     
             if (!BSIM4capModGiven) 
@@ -4158,20 +4159,20 @@ module bsim4va(d, g, s, b);
             else if ((BSIM4capMod != 0) && (BSIM4capMod != 1)
                && (BSIM4capMod != 2)) begin
                 BSIM4capMod = 2;
-                $strobe("Warning: (instance %M) capMod has been set to its default value: 2.\n");
+                $strobe("Warning: (instance X*) capMod has been set to its default value: 2.\n");
             end 
     
             if (!BSIM4rdsModGiven)
                 BSIM4rdsMod = 0;
             else if ((BSIM4rdsMod != 0) && (BSIM4rdsMod != 1)) begin
                 BSIM4rdsMod = 0;
-                $strobe("Warning: (instance %M) rdsMod has been set to its default value: 0.\n");
+                $strobe("Warning: (instance X*) rdsMod has been set to its default value: 0.\n");
             end 
             if (!BSIM4rbodyModGiven)
                 BSIM4rbodyMod = 0;
             else if ((BSIM4rbodyMod != 0) && (BSIM4rbodyMod != 1) && (BSIM4rbodyMod != 2)) begin
                 BSIM4rbodyMod = 0;
-                $strobe("Warning: (instance %M) rbodyMod has been set to its default value: 0.\n");
+                $strobe("Warning: (instance X*) rbodyMod has been set to its default value: 0.\n");
             end 
     
             if (!BSIM4rgateModGiven)
@@ -4179,14 +4180,14 @@ module bsim4va(d, g, s, b);
             else if ((BSIM4rgateMod != 0) && (BSIM4rgateMod != 1)
                && (BSIM4rgateMod != 2) && (BSIM4rgateMod != 3)) begin
                 BSIM4rgateMod = 0;
-                $strobe("Warning: (instance %M) rgateMod has been set to its default value: 0.\n");
+                $strobe("Warning: (instance X*) rgateMod has been set to its default value: 0.\n");
             end 
     
             if (!BSIM4perModGiven)
                 BSIM4perMod = 1;
             else if ((BSIM4perMod != 0) && (BSIM4perMod != 1)) begin
                 BSIM4perMod = 1;
-                $strobe("Warning: (instance %M) perMod has been set to its default value: 1.\n");
+                $strobe("Warning: (instance X*) perMod has been set to its default value: 1.\n");
             end 
     
             if (!BSIM4geoModGiven)
@@ -4198,26 +4199,26 @@ module bsim4va(d, g, s, b);
                 BSIM4fnoiMod = 1;
             else if ((BSIM4fnoiMod != 0) && (BSIM4fnoiMod != 1)) begin
                 BSIM4fnoiMod = 1;
-                $strobe("Warning: (instance %M) fnoiMod has been set to its default value: 1.\n");
+                $strobe("Warning: (instance X*) fnoiMod has been set to its default value: 1.\n");
             end 
             if (!BSIM4tnoiModGiven)
                 BSIM4tnoiMod = 0; /* WDLiu: tnoiMod=1 needs to set int S/D nodes */
             else if ((BSIM4tnoiMod != 0) && (BSIM4tnoiMod != 1)) begin
                 BSIM4tnoiMod = 0;
-                $strobe("Warning: (instance %M) tnoiMod has been set to its default value: 0.\n");
+                $strobe("Warning: (instance X*) tnoiMod has been set to its default value: 0.\n");
             end 
     
             if (!BSIM4trnqsModGiven)
                 BSIM4trnqsMod = 0; 
             else if ((BSIM4trnqsMod != 0) && (BSIM4trnqsMod != 1)) begin
                 BSIM4trnqsMod = 0;
-                $strobe("Warning: (instance %M) trnqsMod has been set to its default value: 0.\n");
+                $strobe("Warning: (instance X*) trnqsMod has been set to its default value: 0.\n");
             end 
             if (!BSIM4acnqsModGiven)
                 BSIM4acnqsMod = 0;
             else if ((BSIM4acnqsMod != 0) && (BSIM4acnqsMod != 1)) begin
                 BSIM4acnqsMod = 0;
-                $strobe("Warning: (instance %M) acnqsMod has been set to its default value: 0.\n");
+                $strobe("Warning: (instance X*) acnqsMod has been set to its default value: 0.\n");
             end 
     
             if (!BSIM4igcModGiven) begin
@@ -4226,13 +4227,13 @@ module bsim4va(d, g, s, b);
             end
             else if ((BSIM4igcMod != 0) && (BSIM4igcMod != 1) && (BSIM4igcMod != 2)) begin
                 BSIM4igcMod = 0;
-                $strobe("Warning: (instance %M) igcMod has been set to its default value: 0.\n");
+                $strobe("Warning: (instance X*) igcMod has been set to its default value: 0.\n");
             end 
             if (!BSIM4igbModGiven)
                 BSIM4igbMod = 0;
             else if ((BSIM4igbMod != 0) && (BSIM4igbMod != 1)) begin
                 BSIM4igbMod = 0;
-                $strobe("Warning: (instance %M) igbMod has been set to its default value: 0.\n");
+                $strobe("Warning: (instance X*) igbMod has been set to its default value: 0.\n");
             end 
     
             if (!BSIM4versionGiven) 
@@ -7295,24 +7296,24 @@ module bsim4va(d, g, s, b);
     
             if (T1 < 0.0) begin
                 T1 = 0.0;
-                $strobe("Warning: (instance %M) Rdw at current temperature is negative; set to 0.\n");
+                $strobe("Warning: (instance X*) Rdw at current temperature is negative; set to 0.\n");
             end 
             if (T2 < 0.0) begin
                 T2 = 0.0;
-                $strobe("Warning: (instance %M) Rdwmin at current temperature is negative; \
+                $strobe("Warning: (instance X*) Rdwmin at current temperature is negative; \
                          set to 0.\n");
             end 
             BSIM4rd0 = T1 / PowWeffWr;
             BSIM4rdwmin = T2 / PowWeffWr;
             if (T3 < 0.0) begin
                 T3 = 0.0;
-                $strobe("Warning: (instance %M) Rsw at current temperature is negative; \
+                $strobe("Warning: (instance X*) Rsw at current temperature is negative; \
                          set to 0.\n");
             end
     
             if (T4 < 0.0) begin
                 T4 = 0.0;
-                $strobe("Warning: (instance %M) Rswmin at current temperature is negative; \
+                $strobe("Warning: (instance X*) Rswmin at current temperature is negative; \
                          set to 0.\n");
             end 
             BSIM4rs0 = T3 / PowWeffWr;
@@ -7327,7 +7328,7 @@ module bsim4va(d, g, s, b);
             
             if (BSIM4eu < 0.0) begin
                 BSIM4eu = 0.0;
-                $strobe("Warning: (instance %M) eu has been negative; reset to 0.0.\n");
+                $strobe("Warning: (instance X*) eu has been negative; reset to 0.0.\n");
             end
             if (BSIM4ucs < 0.0) begin
                 BSIM4ucs = 0.0;
@@ -7422,24 +7423,24 @@ module bsim4va(d, g, s, b);
     
             if (BSIM4k1Given || BSIM4k2Given) begin
                 if (!BSIM4k1Given) begin
-                    $strobe("Warning: (instance %M) k1 should be specified with k2.\n");
+                    $strobe("Warning: (instance X*) k1 should be specified with k2.\n");
                     BSIM4k1 = 0.53;
                 end 
                 if (!BSIM4k2Given) begin
-                    $strobe("Warning: (instance %M) k2 should be specified with k1.\n");
+                    $strobe("Warning: (instance X*) k2 should be specified with k1.\n");
                     BSIM4k2 = -0.0186;
                 end 
                 if (BSIM4nsubGiven)
-                    $strobe("Warning: (instance %M) nsub is ignored because k1 or k2 is given.\n");
+                    $strobe("Warning: (instance X*) nsub is ignored because k1 or k2 is given.\n");
                 if (BSIM4xtGiven)
-                    $strobe("Warning: (instance %M) xt is ignored because k1 or k2 is given.\n");
+                    $strobe("Warning: (instance X*) xt is ignored because k1 or k2 is given.\n");
                 if (BSIM4vbxGiven)
-                    $strobe("Warning: (instance %M) vbx is ignored because k1 or k2 is given.\n");
+                    $strobe("Warning: (instance X*) vbx is ignored because k1 or k2 is given.\n");
                 if (BSIM4gamma1Given)
-                    $strobe("Warning: (instance %M) gamma1 is ignored because k1 or k2 \
+                    $strobe("Warning: (instance X*) gamma1 is ignored because k1 or k2 \
                              is given.\n");
                 if (BSIM4gamma2Given)
-                    $strobe("Warning: (instance %M) gamma2 is ignored because k1 or k2 \
+                    $strobe("Warning: (instance X*) gamma2 is ignored because k1 or k2 \
                              is given.\n");
             end 
             else begin
@@ -7879,7 +7880,7 @@ module bsim4va(d, g, s, b);
             else begin
                 BSIM4grgeltd = 1.0e3; /* mho */
                 if (BSIM4rgateMod != 0)
-                    $strobe("Warning: (instance %M) The gate conductance reset to 1.0e3 mho.\n");
+                    $strobe("Warning: (instance X*) The gate conductance reset to 1.0e3 mho.\n");
             end
     
             DMCGeff = BSIM4dmcg - BSIM4dmcgt;
@@ -7989,7 +7990,7 @@ module bsim4va(d, g, s, b);
                  && (!BSIM4sourceSquaresGiven && BSIM4rgeoMod != 0) 
                    || BSIM4rdsMod != 0) ) begin
                   BSIM4sourceConductance = 1.0e3; /* mho */
-	          $strobe ("Warning: (instance %M) Source diffusion conductance reset to 1.0e3 mho.\n");
+	          $strobe ("Warning: (instance X*) Source diffusion conductance reset to 1.0e3 mho.\n");
               end
             end 
     
@@ -8013,7 +8014,7 @@ module bsim4va(d, g, s, b);
                  && (!BSIM4drainSquaresGiven && BSIM4rgeoMod != 0) 
                    || BSIM4rdsMod != 0 ) ) begin
                   BSIM4drainConductance = 1.0e3; /* mho */
-	          $strobe ("Warning: (instance %M) Drain diffusion conductance reset to 1.0e3 mho.\n");
+	          $strobe ("Warning: (instance X*) Drain diffusion conductance reset to 1.0e3 mho.\n");
               end            
             end
     
@@ -8070,7 +8071,7 @@ module bsim4va(d, g, s, b);
                         T2 = BSIM4ijthsrev / SourceSatCurrent;
                         if (T2 < 1.0) begin
                             T2 = 10.0;
-                            $strobe("Warning: (instance %M) ijthsrev too small and set to 10 times IsbSat.\n");
+                            $strobe("Warning: (instance X*) ijthsrev too small and set to 10 times IsbSat.\n");
                         end  
                         BSIM4vjsmRev = -BSIM4bvs
                         - Nvtms * ln((T2 - 1.0) / BSIM4xjbvs);
@@ -8124,7 +8125,7 @@ module bsim4va(d, g, s, b);
                         T2 = BSIM4ijthdrev / DrainSatCurrent;
                         if (T2 < 1.0) begin
                             T2 = 10.0;
-                            $strobe("Warning: (instance %M) ijthdrev too small and set to 10 times IdbSat.\n");
+                            $strobe("Warning: (instance X*) ijthdrev too small and set to 10 times IdbSat.\n");
                         end 
                         BSIM4vjdmRev = -BSIM4bvd - Nvtmd * ln((T2 - 1.0) 
                                       / BSIM4xjbvd);
@@ -8300,11 +8301,11 @@ module bsim4va(d, g, s, b);
               $strobe("Topology Selection: rdsmod=%d rgatemod=%d rbodymod=%d\n", BSIM4rdsMod, BSIM4rgateMod, BSIM4rbodyMod);
             end
             if ((BSIM4version-4.8) > 0.0001) 
-                $strobe("\nWarning: (instance %M) The latest version is BSIM4.8.0; you specified a wrong version number.\n");
+                $strobe("\nWarning: (instance X*) The latest version is BSIM4.8.0; you specified a wrong version number.\n");
     
             if ((BSIM4rgateMod == 2) || (BSIM4rgateMod == 3)) begin
                 if ((BSIM4trnqsMod == 1) || (BSIM4acnqsMod == 1))
-                    $strobe("Warning: (instance %M) You've selected both Rg and charge deficit NQS; select one only.\n");
+                    $strobe("Warning: (instance X*) You've selected both Rg and charge deficit NQS; select one only.\n");
             end 
     
             if (BSIM4toxe <= 0.0) begin
@@ -8434,7 +8435,7 @@ module bsim4va(d, g, s, b);
                 Fatal_Flag = 1;
             end 
             if (BSIM4pscbe2 <= 0.0) begin
-                $strobe("Warning: (instance %M) Pscbe2 = %g is not positive.\n", BSIM4pscbe2);
+                $strobe("Warning: (instance X*) Pscbe2 = %g is not positive.\n", BSIM4pscbe2);
             end 
     
             if (BSIM4nf < 1.0) begin
@@ -8465,18 +8466,18 @@ module bsim4va(d, g, s, b);
             end 
             if ((BSIM4ngcon != 1.0) && (BSIM4ngcon != 2.0)) begin
                 BSIM4ngcon = 1.0;
-                $strobe("Warning: (instance %M) Ngcon must be equal to one or two; reset to 1.0.\n");
+                $strobe("Warning: (instance X*) Ngcon must be equal to one or two; reset to 1.0.\n");
             end 
             if (BSIM4gbmin < 1.0e-20) 
-                $strobe("Warning: (instance %M) Gbmin = %g is too small.\n", BSIM4gbmin);
+                $strobe("Warning: (instance X*) Gbmin = %g is too small.\n", BSIM4gbmin);
             if (BSIM4noff < 0.1) 
-                $strobe("Warning: (instance %M) Noff = %g is too small.\n", BSIM4noff);
+                $strobe("Warning: (instance X*) Noff = %g is too small.\n", BSIM4noff);
             if (BSIM4noff > 4.0) 
-                $strobe("Warning: (instance %M) Noff = %g is too large.\n", BSIM4noff);
+                $strobe("Warning: (instance X*) Noff = %g is too large.\n", BSIM4noff);
             if (BSIM4voffcv < -0.5) 
-                $strobe("Warning: (instance %M) Voffcv = %g is too small.\n", BSIM4voffcv);
+                $strobe("Warning: (instance X*) Voffcv = %g is too small.\n", BSIM4voffcv);
             if (BSIM4voffcv > 0.5)
-                $strobe("Warning: (instance %M) Voffcv = %g is too large.\n", BSIM4voffcv);
+                $strobe("Warning: (instance X*) Voffcv = %g is too large.\n", BSIM4voffcv);
     
             /* Check capacitance parameters */
             if (BSIM4clc < 0.0) begin
@@ -8532,84 +8533,84 @@ module bsim4va(d, g, s, b);
 	end
             
             if (BSIM4moin < 5.0)
-                $strobe("Warning: (instance %M) Moin = %g is too small.\n", BSIM4moin);
+                $strobe("Warning: (instance X*) Moin = %g is too small.\n", BSIM4moin);
             if (BSIM4moin > 25.0)
-                $strobe("Warning: (instance %M) Moin = %g is too large.\n", BSIM4moin);
+                $strobe("Warning: (instance X*) Moin = %g is too large.\n", BSIM4moin);
             if(BSIM4capMod ==2) begin
                 if (BSIM4acde < 0.1)
-                    $strobe("Warning: (instance %M) Acde = %g is too small.\n", BSIM4acde);
+                    $strobe("Warning: (instance X*) Acde = %g is too small.\n", BSIM4acde);
                 if (BSIM4acde > 1.6)
-                    $strobe("Warning: (instance %M) Acde = %g is too large.\n", BSIM4acde);
+                    $strobe("Warning: (instance X*) Acde = %g is too large.\n", BSIM4acde);
             end
     
             if (BSIM4paramChk ==1) begin
             
             /* Check L and W parameters */ 
             if (BSIM4leff <= 1.0e-9) 
-                $strobe("Warning: (instance %M) Leff = %g <= 1.0e-9. Recommended Leff >= 1e-8 \n", BSIM4leff);
+                $strobe("Warning: (instance X*) Leff = %g <= 1.0e-9. Recommended Leff >= 1e-8 \n", BSIM4leff);
             if (BSIM4leffCV <= 1.0e-9)
-                $strobe("Warning: (instance %M) Leff for CV = %g <= 1.0e-9. Recommended LeffCV >=1e-8 \n", BSIM4leffCV);
+                $strobe("Warning: (instance X*) Leff for CV = %g <= 1.0e-9. Recommended LeffCV >=1e-8 \n", BSIM4leffCV);
             if (BSIM4weff <= 1.0e-9)
-                $strobe("Warning: (instance %M) Weff = %g <= 1.0e-9. Recommended Weff >=1e-7 \n", BSIM4weff);
+                $strobe("Warning: (instance X*) Weff = %g <= 1.0e-9. Recommended Weff >=1e-7 \n", BSIM4weff);
             if (BSIM4weffCV <= 1.0e-9)
-                $strobe("Warning: (instance %M) Weff for CV = %g <= 1.0e-9. Recommended WeffCV >= 1e-7 \n", BSIM4weffCV);
+                $strobe("Warning: (instance X*) Weff for CV = %g <= 1.0e-9. Recommended WeffCV >= 1e-7 \n", BSIM4weffCV);
             
             /* Check threshold voltage parameters */
             if (BSIM4toxe < 1.0e-10)
-                $strobe("Warning: (instance %M) Toxe = %g is less than 1A. Recommended Toxe >= 5A\n", BSIM4toxe);
+                $strobe("Warning: (instance X*) Toxe = %g is less than 1A. Recommended Toxe >= 5A\n", BSIM4toxe);
             if (BSIM4toxp < 1.0e-10)
-                $strobe("Warning: (instance %M) Toxp = %g is less than 1A. Recommended Toxp >= 5A\n", BSIM4toxp);
+                $strobe("Warning: (instance X*) Toxp = %g is less than 1A. Recommended Toxp >= 5A\n", BSIM4toxp);
             if (BSIM4toxm < 1.0e-10)
-                $strobe("Warning: (instance %M) Toxm = %g is less than 1A. Recommended Toxm >= 5A\n", BSIM4toxm);
+                $strobe("Warning: (instance X*) Toxm = %g is less than 1A. Recommended Toxm >= 5A\n", BSIM4toxm);
             if (BSIM4ndep <= 1.0e12)
-                $strobe("Warning: (instance %M) Ndep = %g may be too small.\n", BSIM4ndep);
+                $strobe("Warning: (instance X*) Ndep = %g may be too small.\n", BSIM4ndep);
             else if (BSIM4ndep >= 1.0e21)
-                $strobe("Warning: (instance %M) Ndep = %g may be too large.\n", BSIM4ndep);
+                $strobe("Warning: (instance X*) Ndep = %g may be too large.\n", BSIM4ndep);
             if (BSIM4nsub <= 1.0e14)
-                $strobe("Warning: (instance %M) Nsub = %g may be too small.\n", BSIM4nsub);
+                $strobe("Warning: (instance X*) Nsub = %g may be too small.\n", BSIM4nsub);
             else if (BSIM4nsub >= 1.0e21)
-                $strobe("Warning: (instance %M) Nsub = %g may be too large.\n", BSIM4nsub);
+                $strobe("Warning: (instance X*) Nsub = %g may be too large.\n", BSIM4nsub);
             if ((BSIM4ngate > 0.0) &&  (BSIM4ngate <= 1.0e18))
-                $strobe("Warning: (instance %M) Ngate = %g is less than 1.E18cm^-3.\n", BSIM4ngate);
+                $strobe("Warning: (instance X*) Ngate = %g is less than 1.E18cm^-3.\n", BSIM4ngate);
             if (BSIM4dvt0 < 0.0)
-                $strobe("Warning: (instance %M) Dvt0 = %g is negative.\n", BSIM4dvt0);   
+                $strobe("Warning: (instance X*) Dvt0 = %g is negative.\n", BSIM4dvt0);   
             if (abs(1.0e-6 / (BSIM4w0 + BSIM4weff)) > 10.0)
-                $strobe("Warning: (instance %M) (W0 + Weff) may be too small.\n");
+                $strobe("Warning: (instance X*) (W0 + Weff) may be too small.\n");
     
             /* Check subthreshold parameters */
             if (BSIM4nfactor < 0.0)
               begin
-              $strobe("Warning: (instance %M) Nfactor = %g is negative.\n", BSIM4nfactor);
+              $strobe("Warning: (instance X*) Nfactor = %g is negative.\n", BSIM4nfactor);
               end 
             if (BSIM4cdsc < 0.0)
               begin
-              $strobe("Warning: (instance %M) Cdsc = %g is negative.\n", BSIM4cdsc);
+              $strobe("Warning: (instance X*) Cdsc = %g is negative.\n", BSIM4cdsc);
               end 
             if (BSIM4cdscd < 0.0)
               begin
-              $strobe("Warning: (instance %M) Cdscd = %g is negative.\n", BSIM4cdscd);
+              $strobe("Warning: (instance X*) Cdscd = %g is negative.\n", BSIM4cdscd);
               end 
             /* Check DIBL parameters */
             if (BSIM4eta0 < 0.0)
               begin
-              $strobe("Warning: (instance %M) Eta0 = %g is negative.\n", BSIM4eta0); 
+              $strobe("Warning: (instance X*) Eta0 = %g is negative.\n", BSIM4eta0); 
               end 
             
             /* Check Abulk parameters */        
             if (abs(1.0e-6 / (BSIM4b1 + BSIM4weff)) > 10.0)
               begin
-              $strobe("Warning: (instance %M) (B1 + Weff) may be too small.\n");
+              $strobe("Warning: (instance X*) (B1 + Weff) may be too small.\n");
               end     
             
             /* Check Saturation parameters */
             if (BSIM4a2 < 0.01)
               begin
-              $strobe("Warning: (instance %M) A2 = %g is too small. Set to 0.01.\n", BSIM4a2);
+              $strobe("Warning: (instance X*) A2 = %g is too small. Set to 0.01.\n", BSIM4a2);
               BSIM4a2 = 0.01;
               end 
             else if (BSIM4a2 > 1.0)
               begin
-              $strobe("Warning: (instance %M) A2 = %g is larger than 1. A2 is set to 1 and A1 is set to 0.\n", BSIM4a2);
+              $strobe("Warning: (instance X*) A2 = %g is larger than 1. A2 is set to 1 and A1 is set to 0.\n", BSIM4a2);
               BSIM4a2 = 1.0;
               BSIM4a1 = 0.0;
     
@@ -8617,30 +8618,30 @@ module bsim4va(d, g, s, b);
     
             if (BSIM4prwg < 0.0)
               begin
-              $strobe("Warning: (instance %M) Prwg = %g is negative. Set to zero.\n", BSIM4prwg);
+              $strobe("Warning: (instance X*) Prwg = %g is negative. Set to zero.\n", BSIM4prwg);
               BSIM4prwg = 0.0;
               end 
             if (BSIM4rdsw < 0.0)
               begin
-              $strobe("Warning: (instance %M) Rdsw = %g is negative. Set to zero.\n", BSIM4rdsw);
+              $strobe("Warning: (instance X*) Rdsw = %g is negative. Set to zero.\n", BSIM4rdsw);
               BSIM4rdsw = 0.0;
               BSIM4rds0 = 0.0;
               end 
             if (BSIM4rds0 < 0.0)
               begin
-              $strobe("Warning: (instance %M) Rds at current temperature = %g is negative. Set to zero.\n", BSIM4rds0);
+              $strobe("Warning: (instance X*) Rds at current temperature = %g is negative. Set to zero.\n", BSIM4rds0);
               BSIM4rds0 = 0.0;
               end 
     
             if (BSIM4rdswmin < 0.0)
               begin
-              $strobe("Warning: (instance %M) Rdswmin at current temperature = %g is negative. Set to zero.\n", BSIM4rdswmin);
+              $strobe("Warning: (instance X*) Rdswmin at current temperature = %g is negative. Set to zero.\n", BSIM4rdswmin);
               BSIM4rdswmin = 0.0;
               end 
     
             if (BSIM4vsattemp < 1.0e3)
               begin
-              $strobe("Warning: (instance %M) Vsat at current temperature = %g may be too small.\n", BSIM4vsattemp);
+              $strobe("Warning: (instance X*) Vsat at current temperature = %g may be too small.\n", BSIM4vsattemp);
               end 
     
             if (BSIM4fprout < 0.0)
@@ -8661,11 +8662,11 @@ module bsim4va(d, g, s, b);
     
             if (BSIM4pdibl1 < 0.0)
                begin
-              $strobe("Warning: (instance %M) Pdibl1 = %g is negative.\n", BSIM4pdibl1);
+              $strobe("Warning: (instance X*) Pdibl1 = %g is negative.\n", BSIM4pdibl1);
                end 
             if (BSIM4pdibl2 < 0.0)
                begin
-              $strobe("Warning: (instance %M) Pdibl2 = %g is negative.\n", BSIM4pdibl2);
+              $strobe("Warning: (instance X*) Pdibl2 = %g is negative.\n", BSIM4pdibl2);
                end 
     
             if (BSIM4nigbinv <= 0.0)
@@ -8790,28 +8791,28 @@ module bsim4va(d, g, s, b);
         /* Check overlap capacitance parameters */
         if (BSIM4cgdo < 0.0)
            begin
-          $strobe("Warning: (instance %M) cgdo = %g is negative. Set to zero.\n", BSIM4cgdo);
+          $strobe("Warning: (instance X*) cgdo = %g is negative. Set to zero.\n", BSIM4cgdo);
           BSIM4cgdo = 0.0;
            end       
         if (BSIM4cgso < 0.0)
            begin
-          $strobe("Warning: (instance %M) cgso = %g is negative. Set to zero.\n", BSIM4cgso);
+          $strobe("Warning: (instance X*) cgso = %g is negative. Set to zero.\n", BSIM4cgso);
           BSIM4cgso = 0.0;
            end       
     
         if (BSIM4tnoia < 0.0)
            begin
-          $strobe("Warning: (instance %M) tnoia = %g is negative. Set to zero.\n", BSIM4tnoia);
+          $strobe("Warning: (instance X*) tnoia = %g is negative. Set to zero.\n", BSIM4tnoia);
           BSIM4tnoia = 0.0;
            end 
         if (BSIM4tnoib < 0.0)
            begin
-          $strobe("Warning: (instance %M) tnoib = %g is negative. Set to zero.\n", BSIM4tnoib);
+          $strobe("Warning: (instance X*) tnoib = %g is negative. Set to zero.\n", BSIM4tnoib);
           BSIM4tnoib = 0.0;
            end 
         if (BSIM4ntnoi < 0.0)
            begin
-          $strobe("Warning: (instance %M) ntnoi = %g is negative. Set to zero.\n", BSIM4ntnoi);
+          $strobe("Warning: (instance X*) ntnoi = %g is negative. Set to zero.\n", BSIM4ntnoi);
           BSIM4ntnoi = 0.0;
            end 
 	/* Limits of Njs and Njd modified in BSIM4.7 */
@@ -8912,7 +8913,7 @@ module bsim4va(d, g, s, b);
     
             end // if (BSIM4paramChk ==1)
             else 
-            $strobe("Warning: (instance %M) Can't open log file; parameter checking skipped.\n");
+            $strobe("Warning: (instance X*) Can't open log file; parameter checking skipped.\n");
            
         end // initial_step
 
